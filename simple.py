@@ -1,28 +1,20 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
+import subprocess
+import socket
 
-app = Flask(__name__)
+app = Flask(_name_)
 
-# Default seed value
-seed_value = 0
+@app.route('/', methods=['POST'])
+def stress_cpu():
+    # Create a separate process for running stress_cpu.py
+    subprocess.Popen(['python3', 'stress_cpu.py'])
+    return {"message": "CPU stress initiated successfully"}
 
-@app.route('/', methods=['GET', 'POST'])
-def handle_request():
-    global seed_value
+@app.route('/', methods=['GET'])
+def get_private_ip():
+    # Get the private IP address using socket
+    private_ip = socket.gethostbyname(socket.gethostname())
+    return {"private_ip": private_ip}
 
-    if request.method == 'POST':
-        # Handle HTTP POST request
-        data = request.get_json()
-        if 'num' in data:
-            # Update seed value with the provided number
-            seed_value = data['num']
-            return jsonify({"message": "Seed value updated successfully"})
-        else:
-            return jsonify({"error": "Invalid request. 'num' parameter not found in JSON body"}), 400
-
-    elif request.method == 'GET':
-        # Handle HTTP GET request
-        return str(seed_value)
-
-if __name__ == '__main__':
-    # Run the Flask application on port 5000
-    app.run(host='0.0.0.0', port=8080)
+if _name_ == '_main_':
+    app.run(debug=True, host='0.0.0.0', port=8080)
