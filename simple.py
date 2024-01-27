@@ -2,7 +2,7 @@ from flask import Flask, request
 import subprocess
 import socket
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def stress_cpu():
